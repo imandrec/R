@@ -27,7 +27,8 @@ y^2                          #raise each component to the second power
 y                            #y itself has not been changed
 y <-y*2y                            #y is changed now
 x <- c(1,3,2,10,5); y <-1:5  #separated two or more statements by semicolons
-x+yx*yx/yx^yx <-c(1,3,2,10,5)sum(x)cumsum(x)              #cumulative sum vectordiff(x)                      #first order difference, x_{t}-x_{t-1}diff(x,2)                    # two step difference x_{t}-x_{t-2}diff(diff(x))                #second order differencesort(x)                      #increasing order
+x+yx*yx/yx^yx <-c(1,3,2,10,5)sum(x)cumsum(x)              #cumulative sum vector
+diff(x)                      #first order difference, x_{t}-x_{t-1}diff(x,2)                    # two step difference x_{t}-x_{t-2}diff(diff(x))                #second order differencesort(x)                      #increasing order
 sort(x, decreasing=T)        #decreasing order
 length(x)              #number of elements in x
 x[3]                   #the third element of x
