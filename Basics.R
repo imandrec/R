@@ -183,3 +183,6 @@ plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)",m
 ?beaver2 # Asi busco mas information sobre algo 
 
 #Thereis a strong relationship when the correlation is close to 1 or -1
+
+#Interpolating: when you are trying to predict outsife of the range of the data
+#Extrapolating: when you move away from the range of the data the model was built on, the results could be more and more off
