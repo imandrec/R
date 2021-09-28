@@ -181,3 +181,5 @@ plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)") 
 plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)",main="Tuition vs. Time") #Includes labels and  title
 
 ?beaver2 # Asi busco mas information sobre algo 
+
+#Thereis a strong relationship when the correlation is close to 1 or -1
