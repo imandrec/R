@@ -188,3 +188,5 @@ plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)",m
 #Extrapolating: when you move away from the range of the data the model was built on, the results could be more and more off
 
 #Data mining: Explore the data 
+
+#glm: general logistic model
