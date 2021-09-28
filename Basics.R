@@ -179,3 +179,5 @@ plot(md$year,md$tuition) #this gives the time plot with dots
 plot(md$year,md$tuition,type='l') #this gives the time plot with the line connecting the dots
 plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)") #Adds labels
 plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)",main="Tuition vs. Time") #Includes labels and  title
+
+?beaver2 # Asi busco mas information sobre algo 
