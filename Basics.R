@@ -186,3 +186,5 @@ plot(md$year,md$tuition,type='l',xlab="Year", ylab="Tuition Cost (in dollars)",m
 
 #Interpolating: when you are trying to predict outsife of the range of the data
 #Extrapolating: when you move away from the range of the data the model was built on, the results could be more and more off
+
+#Data mining: Explore the data 
