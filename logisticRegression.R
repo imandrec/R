@@ -7,7 +7,7 @@ pie(table(md$home_ownership))
 unique(md$outcome)
 
 
-md$outcome_dummy <- 0 #1:paid off - 0:
+md$outcome_dummy <- 0 #1:paid off - 0
 head(md)
 table(md$outcome_dummy)
 
