@@ -26,6 +26,7 @@ lm.cars$coefficients
 lm.cars$fit
 summary(lm.cars)
 
+
 prediction <- function(x){
   return(coef(lm.cars)["(Intercept)"]+(coef(lm.cars)["cars$speed"])*(x))}
 
