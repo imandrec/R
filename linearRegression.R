@@ -9,6 +9,7 @@ plot(beaver2$time, beaver2$temp) #gives scatterplot
 plot(beaver2$time, beaver2$temp, pch=beaver2$activ) #gives more detailed scatterplot/pch in R The pch stands for plot symbols
 cor(beaver2) #Correlation matrix
 
+
 #Fitted Line Plots
 #lm = linear model
 
