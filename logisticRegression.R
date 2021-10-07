@@ -18,6 +18,7 @@ logistic_model <- glm(outcome_dummy ~ payment_inc_ratio + purpose_ + home_ + emp
 pred <- predict(logistic_model)
 summary(pred)
 
+
 prob <- 1/(1+exp(-pred)) #This is the conversion to get probabilities
 summary(prob) #This will tell the prob if they will pay off their loans 
 
