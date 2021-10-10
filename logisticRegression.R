@@ -21,3 +21,4 @@ prob <- 1/(1+exp(-pred)) #This is the conversion to get probabilities
 summary(prob) #This will tell the prob if they will pay off their loans 
 
 plot(sort(prob ))
+
