@@ -14,7 +14,6 @@ exp(2)                       #exponential function
 15%/%4                         #Integer divide operation
 #                      #comment line
 
-
 x <- log(2.843432)              #assign value to x
 floor(x)                 #largest integer less than or equal to x
 ceiling(x)             #smallest integer greater than or equal to x
