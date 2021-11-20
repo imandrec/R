@@ -9,6 +9,7 @@
 #summary(MMM)
 #candleChart(MMM, up.col = "green", dn.col = "red", theme = "white")
 
+
 #
 #install.packages("ggplot2")
 #install.packages("quantmod")
