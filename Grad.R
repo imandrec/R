@@ -30,3 +30,30 @@ candleChart(MMM, up.col = "green", dn.col = "red", theme = "white")
 addSMA(n = c(20, 50, 200))
 
 plot(MMM$MMM.Adjusted)
+
+
+library(quantmod)
+library(BatchGetSymbols)
+
+sp500 <- GetSP500Stocks(
+  do.cache = FALSE,
+  cache.folder = file.path(tempdir(), "BGS_Cache")
+)
+
+tickers <- head(sp500$Tickers,20)
+first.date <- Sys.Date() - 7500
+last.date <- Sys.Date()
+
+stocks <- getSymbols.yahoo("tickers", auto.assign = F)
+
+stocks <- BatchGetSymbols(tickers = tickers,
+                         first.date = first.date,
+                         last.date = last.date,
+                         do.cache = FALSE)
+
+
+#
+
+
+
+
