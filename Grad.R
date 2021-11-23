@@ -1,5 +1,6 @@
 library(quantmod)
 library(BatchGetSymbols)
+library(randomForest)
 
 sp500 <- GetSP500Stocks()
 
@@ -27,8 +28,43 @@ for (i in 1:20){
 }
 
 #calculate 10 day moving average
+
+
 for (i in 1:20){
   for (j in 11:nrow(datalist[[i]])){
     datalist[[i]]$MovingAverage10[j] <- mean(datalist[[i]]$price.adjusted[(j-10):(j-1)])
   }
+}
+
+for (i in 1:20){
+  for (j in 51:nrow(datalist[[i]])){
+    datalist[[i]]$MovingAverage50[j] <- mean(datalist[[i]]$price.adjusted[(j-50):(j-1)])
+  }
+}
+
+for (i in 1:20){
+  for (j in 201:nrow(datalist[[i]])){
+    datalist[[i]]$MovingAverage200[j] <- mean(datalist[[i]]$price.adjusted[(j-200):(j-1)])
+  }
+}
+#check moving averages
+
+
+trainingdata <- list()
+
+for (i in 1:20){
+  trainingdata[[i]] <- datalist[[i]][sample(nrow(datalist[[i]]), 0.8*nrow(datalist[[i]])),]
+}
+
+
+#create random forest models
+modellist <- list()
+for (i in 1:20){
+  modellist[[i]] <- randomForest(price.adjusted ~ ., data=trainingdata[[i]], ntree=100, mtry=2, importance=TRUE) 
+}
+
+#run prediction
+predictions <- list()
+for (i in 1:20){
+  predictions[[i]] <- predict(modellist[[i]],datalist[[i]])
 }
