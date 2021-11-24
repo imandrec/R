@@ -8,7 +8,6 @@ tickers <- head(sp500$Tickers,20)
 first.date <- Sys.Date() - 7500
 last.date <- Sys.Date()
 
-
 stocks <- BatchGetSymbols(tickers = tickers,
                          first.date = first.date,
                          last.date = last.date,
