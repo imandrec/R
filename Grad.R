@@ -28,7 +28,6 @@ for (i in 1:20){
 
 #moving average
 
-
 for (i in 1:20){
   for (j in 11:nrow(tabla[[i]])){
     tabla[[i]]$MovingAverage10[j] <- mean(tabla[[i]]$price.adjusted[(j-10):(j-1)])
