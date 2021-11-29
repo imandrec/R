@@ -3,7 +3,6 @@ library(BatchGetSymbols)
 library(randomForest)
 library(TTR)
 
-
 sp500 <- GetSP500Stocks()
 
 tickers <- head(sp500$Tickers,20)
