@@ -3,6 +3,7 @@ library(quantmod)
 library(BatchGetSymbols)
 library(randomForest)
 library(TTR)
+library(shiny)
 
 #import the first 20 stocks
 sp500 <- GetSP500Stocks()
@@ -78,3 +79,47 @@ predictions <- list()
 for (i in 1:20){
   predictions[[i]] <- predict(random_forest[[i]],tabla[[i]])
 }
+
+#R shiny app
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  
+  # Application title
+  titlePanel("S&P 500 stocks"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30),
+      selectInput("variablechoice", "Stock", choices=c("uno","dos","tres"),
+                  selected="dos")
+      
+    ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+  
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
