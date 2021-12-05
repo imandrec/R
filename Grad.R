@@ -5,7 +5,6 @@ library(randomForest)
 library(TTR)
 library(shiny)
 
-
 #import the first 20 stocks
 sp500 <- GetSP500Stocks()
 tickers <- head(sp500$Tickers,20)
@@ -49,8 +48,9 @@ while(i <= 20){
   for (j in 201:nrow(tabla[[i]])){
     tabla[[i]]$MovingAverage200[j] <- mean(tabla[[i]]$price.adjusted[(j-200):(j-1)])
   }
-  i <- i+1 
+  i <- i+1
 }
+
 
 #additional technical indicator
 #Bollinger Bands
@@ -64,7 +64,7 @@ ind <- list()
 train <- list()
 test <- list()
 for (i in 1:20){
-  ind[[i]] <- sample(1:nrow(tabla[[i]]), 0.7*nrow(tabla[[i]]),replace = FALSE) 
+  ind[[i]] <- sample(1:nrow(tabla[[i]]), 0.7*nrow(tabla[[i]]),replace = FALSE)
   train[[i]] <- tabla[[i]][ind[[i]],]
   test[[i]] <- tabla[[i]][!(c(1:nrow(tabla[[i]])) %in% ind[[i]]),]
 }
@@ -72,7 +72,7 @@ for (i in 1:20){
 #random forest
 random_forest <- list()
 for (i in 1:20){
-  random_forest[[i]] <- randomForest(price.adjusted ~ MovingAverage10 + MovingAverage50 + MovingAverage200, data=tabla[[i]], ntree=10, mtry=1, importance=TRUE) 
+  random_forest[[i]] <- randomForest(price.adjusted ~ MovingAverage10 + MovingAverage50 + MovingAverage200, data=tabla[[i]], ntree=200, mtry=1, importance=TRUE)
 }
 
 #predictions
@@ -83,44 +83,43 @@ for (i in 1:20){
 
 #R shiny app
 
-# Define UI for application that draws a histogram
+# Define UI f
 ui <- fluidPage(
-  
+
   # Application title
   titlePanel("S&P 500 stocks"),
-  
-  # Sidebar with a slider input for number of bins 
+
+  # Sidebar with a slider input and select input
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30),
-      selectInput("variablechoice", "Stock", choices=c("uno","dos","tres"),
-                  selected="dos")
-      
+
+      selectInput("variablechoice", "Stock", choices=tickers,
+                  selected=head(tickers,1)),
+
+      sliderInput("date",
+                  "Date:",
+                  min = first.date, max = last.date, step = 1, value = c(first.date,last.date))
     ),
-    
+
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+
+      h3("Actual vs modeled Stocks prices", align = "center"),
+      plotOutput("distPlot"),
+      p(h6("Time", align = "center"))
     )
   )
 )
 
 # Define server logic required to draw a histogram
+
 server <- function(input, output) {
-  
+  #ts function
   output$distPlot <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    tickers.timeseries <- tabla[[which(tickers == input$variablechoice)]][,c(2,3)]
+    plot(tickers.timeseries,xlim = c(input$date[1],input$date[2]),type = 'l')
   })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
