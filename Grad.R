@@ -24,6 +24,7 @@ for (i in 1:20){
                                    do.cache = FALSE)
 }
 
+
 #set up list for values
 tabla <- list()
 for (i in 1:20){
