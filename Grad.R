@@ -5,7 +5,6 @@ library(randomForest)
 library(TTR)
 library(shiny)
 
-
 #import the first 20 stocks
 sp500 <- GetSP500Stocks()
 tickers <- head(sp500$Tickers,20)
@@ -24,7 +23,6 @@ for (i in 1:20){
                                    freq.data = "weekly",
                                    do.cache = FALSE)
 }
-
 
 #set up list for values
 tabla <- list()
@@ -62,25 +60,28 @@ for (i in 1:20){
 }
 
 #
-ind <- list()
-train <- list()
+ind <- list() 
+training <- list()
 test <- list()
 for (i in 1:20){
-  ind[[i]] <- sample(1:nrow(tabla[[i]]), 0.7*nrow(tabla[[i]]),replace = FALSE)
-  train[[i]] <- tabla[[i]][ind[[i]],]
+  tabla[[i]] <- tabla[[i]][c(201:nrow(tabla[[i]])),]
+  ind[[i]] <- sample(1:nrow(tabla[[i]]), 0.7*nrow(tabla[[i]]))
+  training[[i]] <- tabla[[i]][ind[[i]],]
   test[[i]] <- tabla[[i]][!(c(1:nrow(tabla[[i]])) %in% ind[[i]]),]
 }
 
 #random forest
 random_forest <- list()
 for (i in 1:20){
-  random_forest[[i]] <- randomForest(price.adjusted ~ MovingAverage10 + MovingAverage50 + MovingAverage200, data=tabla[[i]], ntree=200, mtry=1, importance=TRUE)
+  random_forest[[i]] <- randomForest(price.adjusted ~ MovingAverage10 + MovingAverage50 + MovingAverage200, data=test[[i]], ntree=100, mtry=2, importance=TRUE)
 }
 
 #predictions
-predictions <- list()
+predictions <- list() 
 for (i in 1:20){
   predictions[[i]] <- predict(random_forest[[i]],tabla[[i]])
+  tabla[[i]] <- cbind(tabla[[i]],predictions[[i]])
+  colnames(tabla[[i]])[ncol(tabla[[i]])] <- "Prediction"
 }
 
 #R shiny app
@@ -105,10 +106,7 @@ ui <- fluidPage(
 
     # Show a plot of the generated distribution
     mainPanel(
-
-      h3("Actual vs modeled Stocks prices", align = "center"),
-      plotOutput("distPlot"),
-      p(h6("Time", align = "center"))
+      plotOutput("myPlot")
     )
   )
 )
@@ -117,9 +115,19 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   #ts function
-  output$distPlot <- renderPlot({
-    tickers.timeseries <- tabla[[which(tickers == input$variablechoice)]][,c(2,3)]
-    plot(tickers.timeseries,xlim = c(input$date[1],input$date[2]),type = 'l')
+  output$myPlot <- renderPlot({
+    tickers.timeseries <- tabla[[which(tickers == input$variablechoice)]][,c(2,3,7)] 
+    tickers.timeseries <- tickers.timeseries[tickers.timeseries$ref.date >= input$date[1] & tickers.timeseries$ref.date <= input$date[2],]
+    MAE <- mean(abs(tickers.timeseries$Prediction - tickers.timeseries$price.adjusted))
+    mean.error <- mean(tickers.timeseries$Prediction - tickers.timeseries$price.adjusted)
+    
+    plot(tickers.timeseries[c(1,2)],xlim = c(input$date[1],input$date[2]),type = 'l',col = "black",xlab=paste("Time :",input$date[1],"to",
+      input$date[2]),ylab="Adjusted stock price",main=paste("Actual vs modeled",input$variablechoice,"Stock Prices"))
+    lines(tickers.timeseries[c(1,3)],xlim = c(input$date[1],input$date[2]),type="l",col="red")
+    
+    legend("topleft", legend = "Stock Price", col = "black", pch = c(1,3), text.col = "black", horiz = F, inset = c(.05,.05), bty = "n")
+    legend("topleft", legend = "Modeled Stock Price", col = "red", pch = c(1,3), text.col = "black", horiz = F, inset = c(.05,.1), bty = "n")
+    legend("topleft", legend = paste("MAE:",round(MAE,digits=2) ,"Average error:",round(mean.error,digits=2)), col = "red", text.col = "black", horiz = F, inset = c(.05,.15), bty = "n")
   })
 }
 
