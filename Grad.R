@@ -19,8 +19,8 @@ for (i in 1:20){
   datalist[[i]] <- BatchGetSymbols(tickers = tickers[i],
                                    first.date = first.date,
                                    last.date = last.date,
-                                   thresh.bad.data = 0.1,
                                    freq.data = "weekly",
+                                   thresh.bad.data = 0.1,
                                    do.cache = FALSE)
 }
 
@@ -64,7 +64,8 @@ ind <- list()
 training <- list()
 test <- list()
 for (i in 1:20){
-  tabla[[i]] <- tabla[[i]][c(201:nrow(tabla[[i]])),]
+  #es esta
+  #tabla[[i]] <- tabla[[i]][c(201:nrow(tabla[[i]])),]
   ind[[i]] <- sample(1:nrow(tabla[[i]]), 0.7*nrow(tabla[[i]]))
   training[[i]] <- tabla[[i]][ind[[i]],]
   test[[i]] <- tabla[[i]][!(c(1:nrow(tabla[[i]])) %in% ind[[i]]),]
