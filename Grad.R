@@ -19,9 +19,10 @@ for (i in 1:20){
   datalist[[i]] <- BatchGetSymbols(tickers = tickers[i],
                                    first.date = first.date,
                                    last.date = last.date,
-                                   freq.data = "weekly",
+                                   freq.data = "daily",
                                    thresh.bad.data = 0.1,
-                                   do.cache = FALSE)
+                                   do.complete.data = TRUE,
+                                   do.cache = TRUE)
 }
 
 #set up list for values
@@ -65,7 +66,7 @@ training <- list()
 test <- list()
 for (i in 1:20){
   #es esta
-  #tabla[[i]] <- tabla[[i]][c(201:nrow(tabla[[i]])),]
+  tabla[[i]] <- tabla[[i]][c(201:nrow(tabla[[i]])),]
   ind[[i]] <- sample(1:nrow(tabla[[i]]), 0.7*nrow(tabla[[i]]))
   training[[i]] <- tabla[[i]][ind[[i]],]
   test[[i]] <- tabla[[i]][!(c(1:nrow(tabla[[i]])) %in% ind[[i]]),]
@@ -134,3 +135,5 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
+
+
