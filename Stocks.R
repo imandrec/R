@@ -13,6 +13,7 @@ tickers <- head(sp500$Tickers,20)
 first.date <- Sys.Date() - 7500
 last.date <- Sys.Date()
 
+
 #pull data from tickers
 datalist <- list()
 for (i in 1:20){
