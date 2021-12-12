@@ -5,6 +5,7 @@ library(randomForest)
 library(TTR)
 library(shiny)
 
+
 #import the first 20 stocks
 sp500 <- GetSP500Stocks()
 tickers <- head(sp500$Tickers,20)
