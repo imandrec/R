@@ -3,6 +3,7 @@ cor (md$WineIntake.md$Risk) #This will give the correlation between the variable
 cor (md) #This gives a correlation table 
 plot(md)
 
+
 #Scatterplots
 beaver2 #preloaded R data set
 plot(beaver2$time, beaver2$temp) #gives scatterplot
